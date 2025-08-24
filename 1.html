@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>فروشگاه خدمات | UI شیشه‌ای + پنل کاربر/ادمین</title>
+  <style>
+    :root{
+      --bg1:#0b0f18;
+      --bg2:#0d1220;
+      --glass-bg: rgba(255,255,255,0.08);
+      --glass-brd: rgba(255,255,255,0.16);
+      --txt:#eef2ff;
+      --muted:#a7b0c3;
+      --primary:#7c5cff;
+      --primary-2:#6ee7f9;
+      --danger:#ff4d6d;
+      --success:#2dd4bf;
+      --warning:#fbbf24;
+      --radius:16px;
+      --blur:14px;
+      --shadow:0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+      --card-pad:18px;
+      --speed: .25s;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:IRANSans, Vazirmatn, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--txt); background: radial-gradient(1200px 800px at 10% 10%, #121a30, transparent),
+                           radial-gradient(1000px 700px at 90% 20%, #1a1430, transparent),
+                           linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width: min(1200px, 92%); margin: 0 auto}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(var(--blur));
+      background: linear-gradient(180deg, rgba(10,14,24,0.75), rgba(10,14,24,0.35));
+      border-bottom:1px solid var(--glass-brd);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; padding:12px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.5px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow:0 8px 24px rgba(124,92,255,0.35);
+      display:grid; place-items:center; color:#0a0d18; font-weight:900;
+    }
+    .nav-actions{display:flex; align-items:center; gap:10px}
+    .btn, button{
+      border:none; color:var(--txt); background:var(--glass-bg); padding:10px 14px; border-radius:12px;
+      border:1px solid var(--glass-brd); box-shadow: var(--shadow); cursor:pointer; transition: transform var(--speed), background var(--speed), border-color var(--speed);
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25)}
+    .btn.primary{ background: linear-gradient(135deg, rgba(124,92,255,0.22), rgba(110,231,249,0.18)); border-color: rgba(124,92,255,0.4)}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      background:rgba(124,92,255,0.14); border:1px dashed rgba(124,92,255,0.5); color:#d8cffc; font-size:12px;
+    }
+
+    /* Hero */
+    .hero{
+      padding:48px 0 16px; position:relative; overflow:hidden;
+    }
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:20px}
+    .card{
+      background: var(--glass-bg); border:1px solid var(--glass-brd); border-radius: var(--radius);
+      backdrop-filter: blur(var(--blur)); box-shadow: var(--shadow);
+    }
+    .hero .card{padding:24px}
+    .title{font-size:28px; line-height:1.35; margin:10px 0 14px}
+    .subtitle{color:var(--muted); margin-top:8px}
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .cta{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap}
+    .statbar{display:flex; gap:12px; margin-top:20px}
+    .stat{flex:1; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); text-align:center}
+    .stat .num{font-size:22px; font-weight:800}
+    .glass-illus{
+      height:100%; background: radial-gradient(200px 200px at 30% 30%, rgba(124,92,255,0.2), transparent),
+                     radial-gradient(240px 240px at 70% 60%, rgba(110,231,249,0.25), transparent);
+      border-radius: var(--radius); border:1px dashed rgba(255,255,255,0.1);
+      display:grid; place-items:center; font-size:14px; color:var(--muted);
+    }
+
+    /* Sections */
+    section{padding:28px 0}
+    .section-head{
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+    }
+    .section-title{font-size:22px}
+    .grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:14px;
+    }
+    .service-card{padding:16px; position:relative; overflow:hidden}
+    .service-card .hdr{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+    .service-card .icon{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:rgba(255,255,255,0.08); border:1px solid var(--glass-brd)}
+    .price{font-weight:800; color:#d0d6ff}
+    .pill{display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:999px; padding:6px 10px; font-size:12px; color:#c2cbe0}
+    .inline{display:flex; gap:8px; flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .divider{height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); margin:10px 0}
+
+    /* User/Admin panels */
+    .panel{
+      display:none; padding:16px; margin-top:10px;
+    }
+    .panel.active{display:block}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .tab{padding:8px 10px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); cursor:pointer}
+    .tab.active{background: linear-gradient(135deg, rgba(124,92,255,0.22), rgba(110,231,249,0.18)); border-color: rgba(124,92,255,0.45)}
+    .table{width:100%; border-collapse:separate; border-spacing:0 8px}
+    .table th, .table td{padding:10px 12px; text-align:right}
+    .row{background: rgba(255,255,255,0.06); border:1px solid var(--glass-brd)}
+    .row td:first-child, .row th:first-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
+    .row td:last-child, .row th:last-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
+
+    input, select, textarea{
+      width:100%; padding:10px 12px; border-radius:12px; color:var(--txt); background: rgba(255,255,255,0.06);
+      border:1px solid var(--glass-brd); outline:none; transition:border-color var(--speed), background var(--speed);
+    }
+    input:focus, select:focus, textarea:focus{border-color: rgba(124,92,255,0.5); background: rgba(255,255,255,0.1)}
+    label{font-size:13px; color:#c8d0e2}
+
+    .two{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    .three{display:grid; grid-template-columns: repeat(3,1fr); gap:10px}
+    .actions{display:flex; gap:8px; flex-wrap:wrap}
+    .danger{background: rgba(255,77,109,0.12); border-color: rgba(255,77,109,0.4)}
+    .success{background: rgba(45,212,191,0.14); border-color: rgba(45,212,191,0.45)}
+    .warning{background: rgba(251,191,36,0.14); border-color: rgba(251,191,36,0.45)}
+
+    /* Footer */
+    footer{padding:18px 0; color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr}
+      .grid{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 640px){
+      .grid{grid-template-columns: 1fr}
+      .two, .three{grid-template-columns: 1fr}
+      .nav{gap:8px}
+      .title{font-size:24px}
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed; bottom:16px; left:16px; right:16px; display:grid; place-items:center; z-index:100;
+      pointer-events:none;
+    }
+    .toast > div{
+      max-width: 520px; width:100%;
+      background: rgba(20, 238, 202, 0.12); border: 1px solid rgba(20,238,202,0.4);
+      border-radius: 12px; padding: 12px 14px; text-align: center; color:#bfeee4; box-shadow: var(--shadow);
+      pointer-events:auto;
+    }
+
+    /* Modal */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:90; padding:16px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute; inset:0; backdrop-filter: blur(10px); background: rgba(0,0,0,0.45)}
+    .modal-card{position:relative; width: min(520px, 96%); padding:16px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">★</div>
+        <div>
+          <div>فروشگاه خدمات دیجیتال</div>
+          <div class="chip">UI شیشه‌ای • پنل کاربر • پنل ادمین</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button class="btn" id="btnCart">سبد خرید <span id="cartCount" class="chip" style="margin-right:6px">0</span></button>
+        <button class="btn" id="btnUserPanel">پنل کاربر</button>
+        <button class="btn" id="btnAdminPanel">پنل ادمین</button>
+        <button class="btn primary" id="btnLogin">ورود / ثبت‌نام</button>
+        <button class="btn danger" id="btnReset">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-grid">
+        <div class="card">
+          <div class="badges">
+            <span class="pill">سرعت تحویل بالا ⚡</span>
+            <span class="pill">پشتیبانی واقعی 🎧</span>
+            <span class="pill">ویرایش زنده محتوا 🛠️</span>
+          </div>
+          <h1 class="title" id="heroTitle">یک فروشگاه خدمات خفن با رابط کاربری شیشه‌ای</h1>
+          <p class="subtitle" id="heroSubtitle">از فروش فیلترشکن تا طراحی لوگو، پاورپوینت، ربات تلگرام، برنامه‌نویسی، طراحی سایت و کلی سرویس دیگر — همه در یک صفحه!</p>
+          <div class="cta">
+            <button class="btn primary" id="btnExplore">مشاهده سرویس‌ها</button>
+            <button class="btn" id="btnContact">ارتباط مستقیم</button>
+          </div>
+          <div class="statbar">
+            <div class="stat">
+              <div class="num" id="statServices">0+</div>
+              <div class="muted">سرویس فعال</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statOrders">0+</div>
+              <div class="muted">سفارش موفق</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statUsers">0+</div>
+              <div class="muted">کاربر ثبت‌نامی</div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-illus card">
+          پیش‌نمایش شیشه‌ای • Glassmorphism
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="sec-services">
+      <div class="section-head">
+        <h2 class="section-title">سرویس‌ها</h2>
+        <div class="inline">
+          <span class="pill">قابل مدیریت از پنل ادمین</span>
+          <span class="pill">حذف/افزودن/ویرایش</span>
+        </div>
+      </div>
+      <div id="servicesGrid" class="grid"></div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="sec-pricing">
+      <div class="section-head">
+        <h2 class="section-title">پکیج‌های پیشنهادی</h2>
+        <div class="inline"><span class="pill">قیمت‌گذاری نمونه</span></div>
+      </div>
+      <div class="grid" id="pricingGrid"></div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="sec-testimonials">
+      <div class="section-head">
+        <h2 class="section-title">نظرات کاربران</h2>
+        <div class="inline"><span class="pill">قابل ویرایش</span></div>
+      </div>
+      <div class="grid" id="testimonialsGrid"></div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="sec-faq">
+      <div class="section-head">
+        <h2 class="section-title">سوالات پرتکرار</h2>
+      </div>
+      <div id="faqList" class="grid"></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="sec-contact">
+      <div class="section-head">
+        <h2 class="section-title">ارتباط با ما</h2>
+      </div>
+      <div class="card" style="padding:16px">
+        <div class="two">
+          <div>
+            <label>نام</label>
+            <input id="contactName" placeholder="نام شما" />
+          </div>
+          <div>
+            <label>ایمیل</label>
+            <input id="contactEmail" placeholder="you@example.com" />
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <label>پیام</label>
+          <textarea id="contactMsg" rows="4" placeholder="سلام! نیاز به ... دارم"></textarea>
+        </div>
+        <div class="actions" style="margin-top:10px">
+          <button class="btn primary" id="btnSendMsg">ارسال پیام</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- USER PANEL -->
+    <section class="panel" id="panel-user">
+      <div class="tabs" id="userTabs"></div>
+      <div id="userView"></div>
+    </section>
+
+    <!-- ADMIN PANEL -->
+    <section class="panel" id="panel-admin">
+      <div class="tabs" id="adminTabs"></div>
+      <div id="adminView"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="divider"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
+        <div>© فروشگاه خدمات دیجیتال — رابط کاربری شیشه‌ای</div>
+        <div class="inline">
+          <span class="pill">RTL</span>
+          <span class="pill">LocalStorage</span>
+          <span class="pill">SPA</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal" id="authModal">
+    <div class="modal-backdrop" data-close="#authModal"></div>
+    <div class="modal-card card">
+      <h3 style="margin:0 0 8px">ورود / ثبت‌نام</h3>
+      <div class="two">
+        <div>
+          <label>ایمیل</label>
+          <input id="authEmail" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label>رمز</label>
+          <input id="authPass" type="password" placeholder="******" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn primary" id="btnDoLogin">ورود</button>
+        <button class="btn" id="btnDoRegister">ثبت‌نام</button>
+        <button class="btn danger" data-close="#authModal">بستن</button>
+      </div>
+      <div class="muted" style="margin-top:8px">ادمین پیش‌فرض: admin@example.com / 123456</div>
+    </div>
+  </div>
+
+  <div class="modal" id="cartModal">
+    <div class="modal-backdrop" data-close="#cartModal"></div>
+    <div class="modal-card card">
+      <h3 style="margin:0 0 8px">سبد خرید</h3>
+      <div id="cartItems"></div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn primary" id="btnCheckout">ثبت سفارش</button>
+        <button class="btn danger" data-close="#cartModal">بستن</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" style="display:none">
+    <div id="toastMsg">ذخیره شد</div>
+  </div>
+
+  <script>
+    // ---------- UTIL ----------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const toast = (msg, type='success')=>{
+      const t = $('#toast'); const m = $('#toastMsg');
+      m.textContent = msg;
+      t.firstElementChild.className = ''; t.firstElementChild.classList.add(type);
+      t.style.display = 'grid';
+      setTimeout(()=> t.style.display='none', 2100);
+    };
+    const uid = ()=>'id_'+Math.random().toString(36).slice(2,9);
+
+    // ---------- STORAGE ----------
+    const KEYS = {
+      users:'app_users',
+      services:'app_services',
+      orders:'app_orders',
+      content:'app_content',
+      auth:'app_auth',
+      testimonials:'app_testimonials',
+      faqs:'app_faqs',
+      pricing:'app_pricing'
+    };
+    const LS = {
+      get:k => JSON.parse(localStorage.getItem(k) || 'null'),
+      set:(k,v)=> localStorage.setItem(k, JSON.stringify(v)),
+      del:k => localStorage.removeItem(k),
+    };
+
+    const defaults = ()=>{
+      const services = [
+        {id:uid(), title:'فروش فیلترشکن پریمیوم', cat:'شبکه', price:190000, desc:'اشتراک امن و پرسرعت. تحویل فوری.', tags:['نامحدود','پشتیبانی ۲۴/۷'], icon:'🔐'},
+        {id:uid(), title:'طراحی لوگو حرفه‌ای', cat:'طراحی', price:850000, desc:'سبک مینیمال/رترو/سه‌بعدی، تا ۳ ویرایش.', tags:['برداری','موکاپ'], icon:'🎨'},
+        {id:uid(), title:'ساخت پاورپوینت', cat:'محتوا', price:350000, desc:'اسلایدهای تمیز و حرفه‌ای با انیمیشن.', tags:['قالب برند','تحویل سریع'], icon:'📊'},
+        {id:uid(), title:'ربات تلگرام', cat:'اتوماسیون', price:1200000, desc:'سفارش‌سازی، پرداخت، مدیریت محتوا.', tags:['Webhook','Inline'], icon:'🤖'},
+        {id:uid(), title:'برنامه‌نویسی اختصاصی', cat:'فنی', price:2400000, desc:'وب/بک‌اند/فرانت. معماری بهینه.', tags:['SPA','API'], icon:'🧩'},
+        {id:uid(), title:'طراحی سایت', cat:'وب', price:1800000, desc:'UI شیشه‌ای، واکنش‌گرا، سئو اولیه.', tags:['SSR','SEO'], icon:'🌐'},
+      ];
+      const users = [
+        {id:uid(), email:'admin@example.com', pass:'123456', name:'مدیر', role:'admin', created:Date.now()},
+      ];
+      const orders = [];
+      const content = {
+        heroTitle:'یک فروشگاه خدمات خفن با رابط کاربری شیشه‌ای',
+        heroSubtitle:'از فروش فیلترشکن تا طراحی لوگو، پاورپوینت، ربات تلگرام، برنامه‌نویسی، طراحی سایت و کلی سرویس دیگر — همه در یک صفحه!',
+        sections:[
+          {key:'sec-services', title:'سرویس‌ها', visible:true, order:1},
+          {key:'sec-pricing', title:'پکیج‌ها', visible:true, order:2},
+          {key:'sec-testimonials', title:'نظرات', visible:true, order:3},
+          {key:'sec-faq', title:'سوالات', visible:true, order:4},
+          {key:'sec-contact', title:'ارتباط', visible:true, order:5},
+        ],
+      };
+      const testimonials = [
+        {id:uid(), name:'آرش', text:'تحویل سریع و پشتیبانی عالی. UIش هم که عشق!', rating:5},
+        {id:uid(), name:'نگین', text:'لوگوی تمیز و حرفه‌ای تحویل گرفتم.', rating:4},
+        {id:uid(), name:'سام', text:'ربات تلگرام دقیقاً چیزی شد که می‌خواستم.', rating:5},
+      ];
+      const faqs = [
+        {id:uid(), q:'زمان تحویل سرویس‌ها چقدر است؟', a:'بسته به سرویس متفاوت است؛ معمولاً بین چند ساعت تا ۳ روز کاری.'},
+        {id:uid(), q:'امکان سفارشی‌سازی کامل هست؟', a:'بله، از طریق بخش پیام یا تیکت می‌توانید جزئیات را ثبت کنید.'},
+        {id:uid(), q:'گارانتی بازگشت وجه دارید؟', a:'برای موارد عدم انجام تعهدات، بازگشت کامل وجه انجام می‌شود.'},
+      ];
+      const pricing = [
+        {id:uid(), name:'استارتر', price:290000, items:['پشتیبانی ایمیلی','تحویل ۲۴–۴۸ ساعته','۱ ویرایش']},
+        {id:uid(), name:'پروفشنال', price:890000, items:['پشتیبانی سریع','تحویل ۱۲–۳۶ ساعته','۳ ویرایش']},
+        {id:uid(), name:'التیما', price:1690000, items:['پشتیبانی اولویت‌دار','تحویل ۶–۲۴ ساعته','ویرایش نامحدود ۷ روزه']},
+      ];
+
+      LS.set(KEYS.services, services);
+      LS.set(KEYS.users, users);
+      LS.set(KEYS.orders, orders);
+      LS.set(KEYS.content, content);
+      LS.set(KEYS.testimonials, testimonials);
+      LS.set(KEYS.faqs, faqs);
+      LS.set(KEYS.pricing, pricing);
+      LS.del(KEYS.auth);
+    };
+
+    if(!LS.get(KEYS.services)) defaults();
+
+    // ---------- STATE ----------
+    let state = {
+      auth: LS.get(KEYS.auth), // {userId}
+      cart: [],
+      view: { userTab: 'orders', adminTab: 'content' }
+    };
+
+    const currentUser = ()=> {
+      const a = LS.get(KEYS.auth); if(!a) return null;
+      const users = LS.get(KEYS.users) || [];
+      return users.find(u=>u.id===a.userId) || null;
+    };
+
+    // ---------- RENDER ----------
+    const money = n => new Intl.NumberFormat('fa-IR').format(n)+' تومان';
+
+    function renderHero(){
+      const c = LS.get(KEYS.content);
+      $('#heroTitle').textContent = c.heroTitle || '';
+      $('#heroSubtitle').textContent = c.heroSubtitle || '';
+    }
+
+    function renderServices(){
+      const services = LS.get(KEYS.services) || [];
+      $('#servicesGrid').innerHTML = services.map(s=>`
+        <div class="card service-card">
+          <div class="hdr">
+            <div class="icon">${s.icon || '⭐'}</div>
+            <div>
+              <div style="font-weight:700">${s.title}</div>
+              <div class="muted" style="font-size:12px">${s.cat || '-'}</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="muted">${s.desc || ''}</div>
+          <div class="inline" style="margin:8px 0">
+            ${(s.tags||[]).map(t=>`<span class="pill">${t}</span>`).join('')}
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:6px">
+            <div class="price">${money(s.price || 0)}</div>
+            <div class="actions">
+              <button class="btn" data-add="${s.id}">افزودن به سبد</button>
+              <button class="btn primary" data-buy="${s.id}">خرید سریع</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderPricing(){
+      const pricing = LS.get(KEYS.pricing) || [];
+      $('#pricingGrid').innerHTML = pricing.map(p=>`
+        <div class="card service-card">
+          <div class="hdr">
+            <div class="icon">💎</div>
+            <div><div style="font-weight:800">${p.name}</div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="muted">${p.items.map(i=>`• ${i}`).join('<br>')}</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:6px">
+            <div class="price">${money(p.price)}</div>
+            <button class="btn primary" data-pkg="${p.id}">انتخاب این پلن</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTestimonials(){
+      const ts = LS.get(KEYS.testimonials) || [];
+      $('#testimonialsGrid').innerHTML = ts.map(t=>`
+        <div class="card service-card">
+          <div class="hdr">
+            <div class="icon">🗣️</div>
+            <div><div style="font-weight:700">${t.name}</div></div>
+          </div>
+          <div class="divider"></div>
+          <div>"${t.text}"</div>
+          <div class="inline" style="margin-top:8px">${'⭐'.repeat(t.rating||5)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderFAQ(){
+      const faqs = LS.get(KEYS.faqs) || [];
+      $('#faqList').innerHTML = faqs.map(f=>`
+        <div class="card service-card">
+          <div style="font-weight:700; margin-bottom:6px">❔ ${f.q}</div>
+          <div class="muted">${f.a}</div>
+        </div>
+      `).join('');
+    }
+
+    function refreshStats(){
+      const services = LS.get(KEYS.services) || [];
+      const orders = LS.get(KEYS.orders) || [];
+      const users = LS.get(KEYS.users) || [];
+      $('#statServices').textContent = services.length + '+';
+      $('#statOrders').textContent = orders.length + '+';
+      $('#statUsers').textContent = users.length + '+';
+    }
+
+    function updateCartCount(){
+      $('#cartCount').textContent = state.cart.reduce((a,c)=>a+c.qty,0);
+    }
+
+    // ---------- CART ----------
+    function openCart(){
+      const services = LS.get(KEYS.services) || [];
+      const items = state.cart.map(ci=>{
+        const s = services.find(x=>x.id===ci.id);
+        return { ...ci, title: s?.title || '—', price: s?.price || 0 };
+      });
+      const total = items.reduce((a,i)=>a + i.price*i.qty,0);
+      $('#cartItems').innerHTML = `
+        <div class="muted" style="margin-bottom:8px">${items.length? 'برای حذف، مقدار را صفر کنید.':''}</div>
+        ${items.map(i=>`
+          <div class="card" style="padding:10px; margin-bottom:8px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px">
+              <div>
+                <div style="font-weight:700">${i.title}</div>
+                <div class="muted" style="font-size:12px">${money(i.price)} × ${i.qty}</div>
+              </div>
+              <div class="two" style="gap:8px; width:200px">
+                <input type="number" min="0" value="${i.qty}" data-qty="${i.id}" />
+                <div style="display:grid; place-items:center; font-weight:700">${money(i.price*i.qty)}</div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+        <div class="divider"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px">
+          <div>مبلغ کل</div>
+          <div style="font-weight:800">${money(total)}</div>
+        </div>
+      `;
+      openModal('#cartModal');
+    }
+
+    function addToCart(id, qty=1){
+      const idx = state.cart.findIndex(c=>c.id===id);
+      if(idx>-1) state.cart[idx].qty += qty;
+      else state.cart.push({id, qty});
+      updateCartCount();
+      toast('به سبد اضافه شد ✅');
+    }
+
+    function checkout(){
+      const user = currentUser();
+      if(!user){ openModal('#authModal'); toast('برای ثبت سفارش وارد شوید', 'warning'); return; }
+      if(!state.cart.length){ toast('سبد خرید خالی است', 'warning'); return; }
+      const services = LS.get(KEYS.services) || [];
+      const items = state.cart.map(ci=>{
+        const s = services.find(x=>x.id===ci.id);
+        return {serviceId: ci.id, title:s?.title||'', price:s?.price||0, qty:ci.qty};
+      });
+      const total = items.reduce((a,i)=>a+i.price*i.qty,0);
+      const orders = LS.get(KEYS.orders) || [];
+      orders.push({id:uid(), userId:user.id, items, total, status:'در انتظار بررسی', created: Date.now()});
+      LS.set(KEYS.orders, orders);
+      state.cart = [];
+      updateCartCount();
+      closeModal('#cartModal');
+      toast('سفارش ثبت شد 🎉');
+      refreshStats();
+    }
+
+    // ---------- AUTH ----------
+    function login(email, pass){
+      const users = LS.get(KEYS.users)||[];
+      const u = users.find(x=>x.email===email && x.pass===pass);
+      if(!u) return false;
+      LS.set(KEYS.auth, {userId:u.id});
+      state.auth = {userId:u.id};
+      toast('خوش آمدید 👋');
+      return true;
+    }
+    function register(email, pass){
+      const users = LS.get(KEYS.users)||[];
+      if(users.find(u=>u.email===email)) { toast('این ایمیل قبلاً ثبت شده', 'warning'); return false; }
+      const nu = {id:uid(), email, pass, name: email.split('@')[0], role:'user', created:Date.now()};
+      users.push(nu); LS.set(KEYS.users, users);
+      LS.set(KEYS.auth, {userId:nu.id}); state.auth={userId:nu.id};
+      toast('ثبت‌نام انجام شد ✅'); refreshStats(); return true;
+    }
+    function logout(){ LS.del(KEYS.auth); state.auth=null; toast('خروج انجام شد'); }
+
+    // ---------- MODAL ----------
+    function openModal(sel){ const m=$(sel); m.classList.add('active'); }
+    function closeModal(sel){ const m=$(sel); m.classList.remove('active'); }
+    document.addEventListener('click', e=>{
+      const closeSel = e.target.getAttribute('data-close');
+      if(closeSel) closeModal(closeSel);
+    });
+
+    // ---------- USER PANEL ----------
+    const userTabs = [
+      {id:'orders', name:'سفارش‌ها'},
+      {id:'profile', name:'پروفایل'},
+      {id:'messages', name:'پیام‌ها'},
+    ];
+    const renderUserTabs = ()=>{
+      const html = userTabs.map(t=>`<div class="tab ${state.view.userTab===t.id?'active':''}" data-user-tab="${t.id}">${t.name}</div>`).join('');
+      $('#userTabs').innerHTML = html;
+    };
+    const renderUserView = ()=>{
+      const u = currentUser();
+      if(!u){ $('#userView').innerHTML = `<div class="card" style="padding:16px">برای مشاهده پنل کاربر وارد شوید.</div>`; return; }
+      if(state.view.userTab==='orders') renderUserOrders(u);
+      if(state.view.userTab==='profile') renderUserProfile(u);
+      if(state.view.userTab==='messages') renderUserMessages(u);
+    };
+    const renderUserOrders = (u)=>{
+      const orders = (LS.get(KEYS.orders)||[]).filter(o=>o.userId===u.id);
+      $('#userView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">سفارش‌های من</h3>
+          <table class="table">
+            <thead><tr class="row"><th>شناسه</th><th>اقلام</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead>
+            <tbody>
+              ${orders.map(o=>`
+                <tr class="row">
+                  <td>${o.id}</td>
+                  <td>${o.items.map(i=>`${i.title} × ${i.qty}`).join('<br>')}</td>
+                  <td>${money(o.total)}</td>
+                  <td><span class="pill">${o.status}</span></td>
+                  <td>${new Date(o.created).toLocaleString('fa-IR')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    };
+    const renderUserProfile = (u)=>{
+      $('#userView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">پروفایل</h3>
+          <div class="two">
+            <div>
+              <label>نام</label>
+              <input id="profName" value="${u.name||''}"/>
+            </div>
+            <div>
+              <label>ایمیل</label>
+              <input id="profEmail" value="${u.email||''}" />
+            </div>
+          </div>
+          <div class="two" style="margin-top:8px">
+            <div>
+              <label>رمز جدید</label>
+              <input id="profPass" type="password" placeholder="تغییر رمز (اختیاری)"/>
+            </div>
+            <div style="display:grid; align-items:end">
+              <button class="btn primary" id="btnSaveProfile">ذخیره پروفایل</button>
+            </div>
+          </div>
+          <div class="actions" style="margin-top:10px">
+            <button class="btn danger" id="btnLogout">خروج</button>
+          </div>
+        </div>
+      `;
+    };
+    const renderUserMessages = (u)=>{
+      const key = 'msg_'+u.id;
+      const msgs = JSON.parse(localStorage.getItem(key) || '[]');
+      $('#userView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">پیام‌ها و تیکت‌ها</h3>
+          <div id="msgList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:10px">
+            ${msgs.map(m=>`
+              <div class="card" style="padding:10px">
+                <div style="display:flex; align-items:center; justify-content:space-between">
+                  <div><span class="pill">${m.type}</span></div>
+                  <div class="muted" style="font-size:12px">${new Date(m.at).toLocaleString('fa-IR')}</div>
+                </div>
+                <div style="margin-top:6px">${m.text}</div>
+                ${m.reply ? `<div class="divider"></div><div class="muted">پاسخ: ${m.reply}</div>`:''}
+              </div>
+            `).join('')}
+          </div>
+          <div class="two">
+            <select id="msgType">
+              <option>پشتیبانی</option>
+              <option>سفارش جدید</option>
+              <option>سوال عمومی</option>
+            </select>
+            <input id="msgText" placeholder="پیامت را بنویس..." />
+          </div>
+          <div class="actions" style="margin-top:10px">
+            <button class="btn primary" id="btnSendTicket">ارسال</button>
+          </div>
+        </div>
+      `;
+    };
+
+    // ---------- ADMIN PANEL ----------
+    const adminTabs = [
+      {id:'content', name:'مدیریت محتوا'},
+      {id:'services', name:'سرویس‌ها'},
+      {id:'pricing', name:'پکیج‌ها'},
+      {id:'testimonials', name:'نظرات'},
+      {id:'faq', name:'FAQ'},
+      {id:'orders', name:'سفارش‌ها'},
+      {id:'users', name:'کاربران'},
+    ];
+    const isAdmin = ()=> currentUser()?.role==='admin';
+
+    const renderAdminTabs = ()=>{
+      const html = adminTabs.map(t=>`<div class="tab ${state.view.adminTab===t.id?'active':''}" data-admin-tab="${t.id}">${t.name}</div>`).join('');
+      $('#adminTabs').innerHTML = html;
+    };
+
+    const renderAdminView = ()=>{
+      if(!isAdmin()){ $('#adminView').innerHTML = `<div class="card" style="padding:16px">دسترسی ادمین ندارید.</div>`; return; }
+      switch(state.view.adminTab){
+        case 'content': return renderAdminContent();
+        case 'services': return renderAdminServices();
+        case 'pricing': return renderAdminPricing();
+        case 'testimonials': return renderAdminTestimonials();
+        case 'faq': return renderAdminFAQ();
+        case 'orders': return renderAdminOrders();
+        case 'users': return renderAdminUsers();
+      }
+    };
+
+    function renderAdminContent(){
+      const c = LS.get(KEYS.content);
+      const sections = ['sec-services','sec-pricing','sec-testimonials','sec-faq','sec-contact'];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">مدیریت محتوا و سکشن‌ها</h3>
+          <div class="two">
+            <div>
+              <label>عنوان هدر</label>
+              <input id="cHeroTitle" value="${c.heroTitle||''}"/>
+            </div>
+            <div>
+              <label>زیرعنوان</label>
+              <input id="cHeroSubtitle" value="${c.heroSubtitle||''}"/>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <h4 style="margin:8px 0">سکشن‌ها</h4>
+          <div style="display:flex; flex-direction:column; gap:8px">
+            ${c.sections.map(s=>`
+              <div class="card" style="padding:10px">
+                <div class="two">
+                  <div>
+                    <label>کلید</label>
+                    <input value="${s.key}" disabled />
+                  </div>
+                  <div>
+                    <label>عنوان</label>
+                    <input data-sec-title="${s.key}" value="${s.title}"/>
+                  </div>
+                </div>
+                <div class="two" style="margin-top:8px">
+                  <div>
+                    <label>نمایش</label>
+                    <select data-sec-visible="${s.key}">
+                      <option value="true" ${s.visible?'selected':''}>بله</option>
+                      <option value="false" ${!s.visible?'selected':''}>خیر</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>ترتیب</label>
+                    <input type="number" data-sec-order="${s.key}" value="${s.order||1}" />
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="actions" style="margin-top:10px">
+            <button class="btn primary" id="btnSaveContent">ذخیره</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAdminServices(){
+      const services = LS.get(KEYS.services)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">سرویس‌ها</h3>
+          <div class="three">
+            <input id="sTitle" placeholder="عنوان (مثلاً طراحی لوگو)"/>
+            <input id="sCat" placeholder="دسته (طراحی/وب/...)"/>
+            <input id="sPrice" type="number" placeholder="قیمت (تومان)"/>
+          </div>
+          <div class="two" style="margin-top:8px">
+            <input id="sDesc" placeholder="توضیحات کوتاه"/>
+            <input id="sTags" placeholder="تگ‌ها با کاما (پلن،سریع،..)" />
+          </div>
+          <div class="two" style="margin-top:8px">
+            <input id="sIcon" placeholder="ایموجی/آیکن (🎨/🌐/...)" />
+            <button class="btn primary" id="btnAddService">افزودن</button>
+          </div>
+          <div class="divider"></div>
+          <table class="table">
+            <thead><tr class="row"><th>عنوان</th><th>دسته</th><th>قیمت</th><th>تگ‌ها</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${services.map(s=>`
+                <tr class="row">
+                  <td><input data-edit-title="${s.id}" value="${s.title}"/></td>
+                  <td><input data-edit-cat="${s.id}" value="${s.cat||''}"/></td>
+                  <td><input type="number" data-edit-price="${s.id}" value="${s.price||0}"/></td>
+                  <td><input data-edit-tags="${s.id}" value="${(s.tags||[]).join(',')}" /></td>
+                  <td class="actions">
+                    <button class="btn success" data-save-service="${s.id}">ذخیره</button>
+                    <button class="btn danger" data-del-service="${s.id}">حذف</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminPricing(){
+      const pricing = LS.get(KEYS.pricing)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">پکیج‌ها</h3>
+          <div class="three">
+            <input id="pName" placeholder="نام پلن"/>
+            <input id="pPrice" type="number" placeholder="قیمت"/>
+            <input id="pItems" placeholder="موارد با خط عمودی | مثلا: پشتیبانی|تحویل ۲۴ساعته"/>
+          </div>
+          <div class="actions" style="margin-top:8px"><button class="btn primary" id="btnAddPlan">افزودن پلن</button></div>
+          <div class="divider"></div>
+          <table class="table">
+            <thead><tr class="row"><th>نام</th><th>قیمت</th><th>آیتم‌ها</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${pricing.map(p=>`
+                <tr class="row">
+                  <td><input data-pl-name="${p.id}" value="${p.name}"/></td>
+                  <td><input type="number" data-pl-price="${p.id}" value="${p.price}"/></td>
+                  <td><input data-pl-items="${p.id}" value="${(p.items||[]).join('|')}"/></td>
+                  <td class="actions">
+                    <button class="btn success" data-pl-save="${p.id}">ذخیره</button>
+                    <button class="btn danger" data-pl-del="${p.id}">حذف</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminTestimonials(){
+      const ts = LS.get(KEYS.testimonials)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">نظرات</h3>
+          <div class="three">
+            <input id="tName" placeholder="نام"/>
+            <input id="tText" placeholder="متن نظر"/>
+            <input id="tRating" type="number" placeholder="امتیاز 1-5" value="5"/>
+          </div>
+          <div class="actions" style="margin-top:8px"><button class="btn primary" id="btnAddTestimonial">افزودن نظر</button></div>
+          <div class="divider"></div>
+          <table class="table">
+            <thead><tr class="row"><th>نام</th><th>متن</th><th>امتیاز</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${ts.map(t=>`
+                <tr class="row">
+                  <td><input data-ts-name="${t.id}" value="${t.name}"/></td>
+                  <td><input data-ts-text="${t.id}" value="${t.text}"/></td>
+                  <td><input type="number" data-ts-rating="${t.id}" value="${t.rating||5}"/></td>
+                  <td class="actions">
+                    <button class="btn success" data-ts-save="${t.id}">ذخیره</button>
+                    <button class="btn danger" data-ts-del="${t.id}">حذف</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminFAQ(){
+      const faqs = LS.get(KEYS.faqs)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">سوالات پرتکرار</h3>
+          <div class="two">
+            <input id="fQ" placeholder="سوال"/>
+            <input id="fA" placeholder="پاسخ"/>
+          </div>
+          <div class="actions" style="margin-top:8px"><button class="btn primary" id="btnAddFAQ">افزودن سوال</button></div>
+          <div class="divider"></div>
+          <table class="table">
+            <thead><tr class="row"><th>سوال</th><th>پاسخ</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${faqs.map(f=>`
+                <tr class="row">
+                  <td><input data-fq-q="${f.id}" value="${f.q}"/></td>
+                  <td><input data-fq-a="${f.id}" value="${f.a}"/></td>
+                  <td class="actions">
+                    <button class="btn success" data-fq-save="${f.id}">ذخیره</button>
+                    <button class="btn danger" data-fq-del="${f.id}">حذف</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminOrders(){
+      const orders = LS.get(KEYS.orders)||[];
+      const users = LS.get(KEYS.users)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">سفارش‌ها</h3>
+          <table class="table">
+            <thead><tr class="row"><th>شناسه</th><th>کاربر</th><th>اقلام</th><th>مبلغ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${orders.map(o=>{
+                const u = users.find(x=>x.id===o.userId);
+                return `
+                  <tr class="row">
+                    <td>${o.id}</td>
+                    <td>${u?.email || '—'}</td>
+                    <td>${o.items.map(i=>`${i.title} × ${i.qty}`).join('<br>')}</td>
+                    <td>${money(o.total)}</td>
+                    <td>
+                      <select data-ord-status="${o.id}">
+                        ${['در انتظار بررسی','در حال انجام','تکمیل شد','لغو شد'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}
+                      </select>
+                    </td>
+                    <td class="actions"><button class="btn success" data-ord-save="${o.id}">ذخیره</button></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAdminUsers(){
+      const users = LS.get(KEYS.users)||[];
+      $('#adminView').innerHTML = `
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 10px">کاربران</h3>
+          <div class="three">
+            <input id="uEmail" placeholder="ایمیل"/>
+            <input id="uPass" placeholder="رمز"/>
+            <select id="uRole">
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+          <div class="actions" style="margin-top:8px"><button class="btn primary" id="btnAddUser">افزودن کاربر</button></div>
+          <div class="divider"></div>
+          <table class="table">
+            <thead><tr class="row"><th>ایمیل</th><th>نام</th><th>نقش</th><th>عملیات</th></tr></thead>
+            <tbody>
+              ${users.map(u=>`
+                <tr class="row">
+                  <td><input data-u-email="${u.id}" value="${u.email}"/></td>
+                  <td><input data-u-name="${u.id}" value="${u.name||''}"/></td>
+                  <td>
+                    <select data-u-role="${u.id}">
+                      <option value="user" ${u.role==='user'?'selected':''}>user</option>
+                      <option value="admin" ${u.role==='admin'?'selected':''}>admin</option>
+                    </select>
+                  </td>
+                  <td class="actions">
+                    <button class="btn success" data-u-save="${u.id}">ذخیره</button>
+                    <button class="btn danger" data-u-del="${u.id}">حذف</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // ---------- EVENTS ----------
+    document.addEventListener('click', e=>{
+      const t = e.target;
+
+      // Add to cart / Buy
+      const addId = t.getAttribute('data-add');
+      if(addId){ addToCart(addId,1); }
+      const buyId = t.getAttribute('data-buy');
+      if(buyId){ addToCart(buyId,1); openCart(); }
+
+      // Select pricing
+      const pkgId = t.getAttribute('data-pkg');
+      if(pkgId){
+        const p = (LS.get(KEYS.pricing)||[]).find(x=>x.id===pkgId);
+        if(p){
+          // Add as custom service item
+          state.cart.push({id:'pkg_'+pkgId, qty:1});
+          updateCartCount();
+          openCart();
+        }
+      }
+
+      // Cart modal
+      if(t.id==='btnCart') openCart();
+      if(t.id==='btnCheckout') checkout();
+
+      // Auth modal
+      if(t.id==='btnLogin') openModal('#authModal');
+      if(t.id==='btnDoLogin'){
+        const email = $('#authEmail').value.trim();
+        const pass = $('#authPass').value.trim();
+        if(login(email,pass)){
+          closeModal('#authModal'); renderUserTabs(); renderUserView(); renderAdminTabs(); renderAdminView();
+        } else toast('ایمیل یا رمز نادرست', 'danger');
+      }
+      if(t.id==='btnDoRegister'){
+        const email = $('#authEmail').value.trim();
+        const pass = $('#authPass').value.trim();
+        if(!email || !pass) return toast('ایمیل و رمز را کامل وارد کنید', 'warning');
+        if(register(email,pass)){
+          closeModal('#authModal'); renderUserTabs(); renderUserView();
+        }
+      }
+
+      // User/Admin panels toggle
+      if(t.id==='btnUserPanel'){ togglePanel('#panel-user'); }
+      if(t.id==='btnAdminPanel'){ togglePanel('#panel-admin'); }
+
+      // User tabs
+      const utab = t.getAttribute('data-user-tab');
+      if(utab){ state.view.userTab = utab; renderUserTabs(); renderUserView(); }
+
+      // Admin tabs
+      const atab = t.getAttribute('data-admin-tab');
+      if(atab){ state.view.adminTab = atab; renderAdminTabs(); renderAdminView(); }
+
+      // User profile actions
+      if(t.id==='btnSaveProfile'){
+        const u = currentUser(); if(!u) return;
+        const users = LS.get(KEYS.users)||[];
+        const idx = users.findIndex(x=>x.id===u.id);
+        users[idx].name = $('#profName').value;
+        users[idx].email = $('#profEmail').value;
+        const np = $('#profPass').value.trim(); if(np) users[idx].pass = np;
+        LS.set(KEYS.users, users); toast('پروفایل ذخیره شد ✅');
+      }
+      if(t.id==='btnLogout'){ logout(); renderUserTabs(); renderUserView(); renderAdminView(); }
+
+      // User messages
+      if(t.id==='btnSendTicket'){
+        const u = currentUser(); if(!u) return;
+        const key = 'msg_'+u.id;
+        const msgs = JSON.parse(localStorage.getItem(key) || '[]');
+        const type = $('#msgType').value; const text = $('#msgText').value.trim();
+        if(!text) return toast('متن پیام را وارد کنید','warning');
+        msgs.push({id:uid(), type, text, at:Date.now(), reply:''});
+        localStorage.setItem(key, JSON.stringify(msgs));
+        renderUserMessages(u); toast('پیام ارسال شد 📩');
+      }
+
+      // Admin content save
+      if(t.id==='btnSaveContent'){
+        const c = LS.get(KEYS.content);
+        c.heroTitle = $('#cHeroTitle').value; c.heroSubtitle = $('#cHeroSubtitle').value;
+        c.sections.forEach(s=>{
+          const vis = document.querySelector(`[data-sec-visible="${s.key}"]`).value==='true';
+          const ord = +document.querySelector(`[data-sec-order="${s.key}"]`).value||1;
+          const title = document.querySelector(`[data-sec-title="${s.key}"]`).value;
+          s.visible = vis; s.order = ord; s.title = title;
+        });
+        LS.set(KEYS.content, c);
+        toast('محتوا ذخیره شد ✅'); renderHero(); applySectionsVisibility();
+      }
+
+      // Admin services CRUD
+      if(t.id==='btnAddService'){
+        const title=$('#sTitle').value.trim(); const cat=$('#sCat').value.trim();
+        const price= +$('#sPrice').value||0; const desc=$('#sDesc').value.trim();
+        const tags= $('#sTags').value.split(',').map(x=>x.trim()).filter(Boolean);
+        const icon= $('#sIcon').value.trim() || '⭐';
+        if(!title) return toast('عنوان را وارد کنید','warning');
+        const list = LS.get(KEYS.services)||[];
+        list.push({id:uid(), title, cat, price, desc, tags, icon});
+        LS.set(KEYS.services, list);
+        renderServices(); renderAdminServices(); refreshStats(); toast('سرویس اضافه شد ✅');
+      }
+      const saveService = t.getAttribute('data-save-service');
+      if(saveService){
+        const list = LS.get(KEYS.services)||[];
+        const i = list.findIndex(x=>x.id===saveService);
+        list[i].title = document.querySelector(`[data-edit-title="${saveService}"]`).value;
+        list[i].cat = document.querySelector(`[data-edit-cat="${saveService}"]`).value;
+        list[i].price = +document.querySelector(`[data-edit-price="${saveService}"]`).value||0;
+        list[i].tags = document.querySelector(`[data-edit-tags="${saveService}"]`).value.split(',').map(x=>x.trim()).filter(Boolean);
+        LS.set(KEYS.services, list); renderServices(); toast('ذخیره شد ✅');
+      }
+      const delService = t.getAttribute('data-del-service');
+      if(delService){
+        let list = LS.get(KEYS.services)||[]; list = list.filter(x=>x.id!==delService);
+        LS.set(KEYS.services, list); renderServices(); renderAdminServices(); refreshStats(); toast('حذف شد 🗑️');
+      }
+
+      // Admin pricing CRUD
+      if(t.id==='btnAddPlan'){
+        const name=$('#pName').value.trim(); const price= +$('#pPrice').value||0;
+        const items= $('#pItems').value.split('|').map(x=>x.trim()).filter(Boolean);
+        if(!name) return toast('نام پلن را وارد کنید','warning');
+        const list = LS.get(KEYS.pricing)||[]; list.push({id:uid(), name, price, items});
+        LS.set(KEYS.pricing, list); renderPricing(); renderAdminPricing(); toast('پلن اضافه شد ✅');
+      }
+      const plSave = t.getAttribute('data-pl-save');
+      if(plSave){
+        const list = LS.get(KEYS.pricing)||[]; const i = list.findIndex(x=>x.id===plSave);
+        list[i].name = document.querySelector(`[data-pl-name="${plSave}"]`).value;
+        list[i].price = +document.querySelector(`[data-pl-price="${plSave}"]`).value||0;
+        list[i].items = document.querySelector(`[data-pl-items="${plSave}"]`).value.split('|').map(x=>x.trim()).filter(Boolean);
+        LS.set(KEYS.pricing, list); renderPricing(); toast('ذخیره شد ✅');
+      }
+      const plDel = t.getAttribute('data-pl-del');
+      if(plDel){
+        let list = LS.get(KEYS.pricing)||[]; list = list.filter(x=>x.id!==plDel);
+        LS.set(KEYS.pricing, list); renderPricing(); renderAdminPricing(); toast('حذف شد 🗑️');
+      }
+
+      // Admin testimonials CRUD
+      if(t.id==='btnAddTestimonial'){
+        const name=$('#tName').value.trim(); const text=$('#tText').value.trim();
+        const rating= Math.max(1, Math.min(5, +$('#tRating').value||5));
+        if(!name||!text) return toast('نام و متن نظر را کامل کنید', 'warning');
+        const ts = LS.get(KEYS.testimonials)||[]; ts.push({id:uid(), name, text, rating});
+        LS.set(KEYS.testimonials, ts); renderTestimonials(); renderAdminTestimonials(); toast('نظر اضافه شد ✅');
+      }
+      const tsSave = t.getAttribute('data-ts-save');
+      if(tsSave){
+        const ts = LS.get(KEYS.testimonials)||[];
+        const i = ts.findIndex(x=>x.id===tsSave);
+        ts[i].name = document.querySelector(`[data-ts-name="${tsSave}"]`).value;
+        ts[i].text = document.querySelector(`[data-ts-text="${tsSave}"]`).value;
+        ts[i].rating = +document.querySelector(`[data-ts-rating="${tsSave}"]`).value||5;
+        LS.set(KEYS.testimonials, ts); renderTestimonials(); toast('ذخیره شد ✅');
+      }
+      const tsDel = t.getAttribute('data-ts-del');
+      if(tsDel){
+        let ts = LS.get(KEYS.testimonials)||[]; ts = ts.filter(x=>x.id!==tsDel);
+        LS.set(KEYS.testimonials, ts); renderTestimonials(); renderAdminTestimonials(); toast('حذف شد 🗑️');
+      }
+
+      // Admin FAQ CRUD
+      if(t.id==='btnAddFAQ'){
+        const q=$('#fQ').value.trim(); const a=$('#fA').value.trim();
+        if(!q||!a) return toast('سوال و پاسخ را کامل کنید','warning');
+        const faqs = LS.get(KEYS.faqs)||[]; faqs.push({id:uid(), q, a});
+        LS.set(KEYS.faqs, faqs); renderFAQ(); renderAdminFAQ(); toast('FAQ اضافه شد ✅');
+      }
+      const fqSave = t.getAttribute('data-fq-save');
+      if(fqSave){
+        const faqs = LS.get(KEYS.faqs)||[]; const i = faqs.findIndex(x=>x.id===fqSave);
+        faqs[i].q = document.querySelector(`[data-fq-q="${fqSave}"]`).value;
+        faqs[i].a = document.querySelector(`[data-fq-a="${fqSave}"]`).value;
+        LS.set(KEYS.faqs, faqs); renderFAQ(); toast('ذخیره شد ✅');
+      }
+      const fqDel = t.getAttribute('data-fq-del');
+      if(fqDel){
+        let faqs = LS.get(KEYS.faqs)||[]; faqs = faqs.filter(x=>x.id!==fqDel);
+        LS.set(KEYS.faqs, faqs); renderFAQ(); renderAdminFAQ(); toast('حذف شد 🗑️');
+      }
+
+      // Admin orders status save
+      const ordSave = t.getAttribute('data-ord-save');
+      if(ordSave){
+        const orders = LS.get(KEYS.orders)||[]; const i = orders.findIndex(x=>x.id===ordSave);
+        const val = document.querySelector(`[data-ord-status="${ordSave}"]`).value;
+        orders[i].status = val; LS.set(KEYS.orders, orders); renderAdminOrders(); toast('وضعیت به‌روزرسانی شد ✅');
+      }
+
+      // Admin users CRUD
+      if(t.id==='btnAddUser'){
+        const email=$('#uEmail').value.trim(); const pass=$('#uPass').value.trim(); const role=$('#uRole').value;
+        if(!email||!pass) return toast('ایمیل و رمز را کامل کنید','warning');
+        const users = LS.get(KEYS.users)||[]; if(users.find(u=>u.email===email)) return toast('ایمیل تکراری','warning');
+        users.push({id:uid(), email, pass, role, name: email.split('@')[0], created:Date.now()});
+        LS.set(KEYS.users, users); renderAdminUsers(); refreshStats(); toast('کاربر اضافه شد ✅');
+      }
+      const uSave = t.getAttribute('data-u-save');
+      if(uSave){
+        const users = LS.get(KEYS.users)||[]; const i = users.findIndex(x=>x.id===uSave);
+        users[i].email = document.querySelector(`[data-u-email="${uSave}"]`).value;
+        users[i].name = document.querySelector(`[data-u-name="${uSave}"]`).value;
+        users[i].role = document.querySelector(`[data-u-role="${uSave}"]`).value;
+        LS.set(KEYS.users, users); renderAdminUsers(); toast('ذخیره شد ✅');
+      }
+      const uDel = t.getAttribute('data-u-del');
+      if(uDel){
+        let users = LS.get(KEYS.users)||[]; users = users.filter(x=>x.id!==uDel);
+        LS.set(KEYS.users, users); renderAdminUsers(); refreshStats(); toast('حذف شد 🗑️');
+      }
+
+      // Nav quick actions
+      if(t.id==='btnExplore'){ document.getElementById('sec-services').scrollIntoView({behavior:'smooth'}); }
+      if(t.id==='btnContact'){ document.getElementById('sec-contact').scrollIntoView({behavior:'smooth'}); }
+
+      // Reset
+      if(t.id==='btnReset'){ if(confirm('بازنشانی به حالت اولیه؟')) { localStorage.clear(); defaults(); boot(); toast('ریست شد 🔄'); } }
+    });
+
+    document.addEventListener('input', e=>{
+      const t = e.target;
+      const qtyId = t.getAttribute('data-qty');
+      if(qtyId){
+        const val = +t.value;
+        const idx = state.cart.findIndex(c=>c.id===qtyId);
+        if(val<=0) state.cart.splice(idx,1);
+        else state.cart[idx].qty = val;
+        updateCartCount(); openCart();
+      }
+    });
+
+    function togglePanel(sel){
+      const el = $(sel);
+      const panels = ['#panel-user','#panel-admin'];
+      panels.forEach(p => $(p).classList.remove('active'));
+      el.classList.add('active');
+      if(sel==='#panel-user'){ renderUserTabs(); renderUserView(); }
+      if(sel==='#panel-admin'){ renderAdminTabs(); renderAdminView(); }
+    }
+
+    function applySectionsVisibility(){
+      const c = LS.get(KEYS.content);
+      // order sections by c.sections.order
+      const order = [...c.sections].sort((a,b)=> (a.order||1) - (b.order||1));
+      const main = document.querySelector('main.container');
+      // Keep hero on top, re-append sections in desired order
+      order.forEach(s=>{
+        const node = document.getElementById(s.key);
+        if(!node) return;
+        node.style.display = s.visible? 'block':'none';
+        main.appendChild(node);
+      });
+    }
+
+    // CONTACT form
+    $('#btnSendMsg')?.addEventListener('click', ()=>{
+      const name = $('#contactName').value.trim();
+      const email = $('#contactEmail').value.trim();
+      const msg = $('#contactMsg').value.trim();
+      if(!name || !email || !msg) return toast('همه فیلدها را کامل کنید','warning');
+      toast('پیام شما ارسال شد ✅');
+      $('#contactName').value=''; $('#contactEmail').value=''; $('#contactMsg').value='';
+    });
+
+    // CART open button
+    $('#btnCart')?.addEventListener('click', openCart);
+
+    // Boot
+    function boot(){
+      renderHero();
+      renderServices();
+      renderPricing();
+      renderTestimonials();
+      renderFAQ();
+      refreshStats();
+      updateCartCount();
+      applySectionsVisibility();
+    }
+    boot();
+  </script>
+</body>
+</html>
